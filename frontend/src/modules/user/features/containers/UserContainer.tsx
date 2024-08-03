@@ -1,7 +1,5 @@
 import React from "react";
 import useUserService from "@modules/user/hooks/useUserService";
-import AccountInfo from "@modules/user/features/components/AccountInfo";
-import LoginForm from "@modules/user/features/components/LoginForm";
 import {Spin} from "antd";
 import UserInfo from "@modules/user/features/components/UserInfo";
 import Box from "@mui/material/Box";
