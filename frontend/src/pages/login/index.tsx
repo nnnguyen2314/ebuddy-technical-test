@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import {useAppDispatch} from "@modules/shared/hooks";
 import useUserService from "@modules/user/hooks/useUserService";
 import {useEffect} from "react";
 import {useRouter} from "next/router";
