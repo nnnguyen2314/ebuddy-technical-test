@@ -1,81 +1,57 @@
-import React, {useState} from "react";
-import {Form, Button, Input, message} from 'antd';
+import React, {useState} from 'react';
+import { Button, Paper, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import FormInputText from '../../../shared/features/formControls/FormInputText';
 
 interface LoginFormProps {
     handleLogin: Function
+};
+
+interface IFormInput {
+    email: string;
+    password: string;
 }
+const formInputDefaultValues = {
+    email: '',
+    password: ''
+};
 
 const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
     const { handleLogin } = props;
-
-    const [form] = Form.useForm();
-    const email = Form.useWatch('email', form);
-    const password = Form.useWatch('password', form);
-
-    const [inputValues, setInputValues] = useState({
-        email: '', password: ''
+    const { handleSubmit, reset, control, setValue } = useForm<IFormInput>({
+        defaultValues: formInputDefaultValues,
     });
 
-    function handleInputChange(evt: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = evt.target;
-        setInputValues({ ...inputValues, [name]: value });
-    }
-
-    const handleSubmit = () => {
+    const onSubmit = (formData: IFormInput) => {
+        console.log(formData);
         if (handleLogin) {
-            handleLogin({
-                email,
-                password
-            })
+            handleLogin(formData);
         }
     };
 
     return (
-        <Form
-            form={form}
-            autoComplete="off"
-            onFinish={handleSubmit}>
-            <Form.Item
-                name="email"
-                validateTrigger="onBlur"
-                rules={[
-                    {
-                        type: 'email',
-                        message: 'Please enter correct email format!',
-                    },
-                    {
-                        required: true,
-                        message: 'Email is required!',
-                    },
-                ]}
-            >
-                <Input
-                    placeholder="Email"
-                    onChange={handleInputChange}
-                />
-            </Form.Item>
-            <Form.Item
-                name="password"
-                validateTrigger="onBlur"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Password is required!',
-                    },
-                ]}
-            >
-                <Input
-                    type="password"
-                    placeholder="Password"
-                    onChange={handleInputChange}
-                />
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Login / Register
-                </Button>
-            </Form.Item>
-        </Form>
+        <Paper
+            style={{
+                display: "grid",
+                gridRowGap: "20px",
+                padding: "20px",
+                margin: "10px 300px",
+            }}
+        >
+            <Typography variant="h4">Login</Typography>
+            <FormInputText name="email" control={control} label="Email" type="email" rules={{
+                required: "You must specify a email"
+            }} />
+            <FormInputText name="password" control={control} label="Password" type="password" rules={{
+                required: "You must specify a password"
+            }} />
+            <Button onClick={handleSubmit(onSubmit)} variant={"contained"}>
+                Login
+            </Button>
+            <Button onClick={() => reset()} variant={"outlined"}>
+                Reset
+            </Button>
+        </Paper>
     );
 };
 

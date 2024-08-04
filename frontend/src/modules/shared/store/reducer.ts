@@ -2,11 +2,9 @@ import {AnyAction, combineReducers} from "@reduxjs/toolkit";
 import { HYDRATE } from 'next-redux-wrapper';
 
 import userSlice from '@modules/user/store/userSlice';
-import videoSlice from '@modules/video/store/videoSlice';
 
 export const combinedReducer = combineReducers({
-    user: userSlice,
-    video: videoSlice
+    user: userSlice
 });
 
 const reducer = (state: ReturnType<typeof combinedReducer>, action: AnyAction) => {

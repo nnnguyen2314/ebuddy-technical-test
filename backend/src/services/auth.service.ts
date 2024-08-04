@@ -4,16 +4,10 @@ import UserCredential = firebase.auth.UserCredential;
 import admin from "firebase-admin";
 import UserRecord = admin.auth.UserRecord;
 import DecodedIdToken = admin.auth.DecodedIdToken;
+import AuthResponse from "../entities/AuthResponse";
 
 const { firebaseAppAdmin, db } = firebaseConfigs;
 
-interface AuthResponse {
-    user?: any,
-    isError: boolean,
-    token?: string,
-    error?: any,
-    doesExist?: boolean
-}
 
 export const checkAuth = async (token: any): Promise<AuthResponse> => {
     return new Promise((resolve) => {

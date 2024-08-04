@@ -13,7 +13,7 @@ import TopNav from "@modules/shared/features/nav/TopNav";
 const MainLayout = ({children}: { children: React.ReactNode }) => {
     const { selector, handleFetchProfile } = useUserService();
     useEffect(() => {
-        if(!selector.userState.isAuthenticated) {
+        if(selector.userState.isAuthenticated) {
             handleFetchProfile();
         }
     }, [handleFetchProfile, selector.userState.isAuthenticated]);

@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "@modules/user/features/login/components/LoginForm";
+import LoginForm from "@modules/user/features/components/LoginForm";
 import useUserService from "@modules/user/hooks/useUserService";
 import {useRouter} from "next/router";
 
@@ -15,7 +15,7 @@ const LoginContainer = () => {
         })
     };
 
-    return <LoginForm handleLogin={handleLogin} />
+    return <LoginForm handleLogin={handleLogin} />;
 };
 
 export default LoginContainer;
