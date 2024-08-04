@@ -25,10 +25,6 @@ const menuItems = [
     {
         label: 'Home',
         pathname: '/'
-    },
-    {
-        label: 'Share your video',
-        pathname: '/video/share'
     }
 ];
 

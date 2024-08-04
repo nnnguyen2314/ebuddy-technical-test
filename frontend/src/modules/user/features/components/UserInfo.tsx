@@ -29,12 +29,12 @@ const UserInfo: React.FC<UserInfoPropType> = (props: UserInfoPropType) => {
 
     return (
         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Tooltip title="Open settings">
+            <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography sx={{mr: '10px'}}>Hello, {userInfo?.email}</Typography>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                    <Typography>Hello, {userInfo?.email}</Typography>
                 </IconButton>
-            </Tooltip>
+            </Box>
             <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"
@@ -51,11 +51,9 @@ const UserInfo: React.FC<UserInfoPropType> = (props: UserInfoPropType) => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                    <Button><Typography textAlign="center">Logout</Typography></Button>
+                </MenuItem>
             </Menu>
         </Box>
     );
