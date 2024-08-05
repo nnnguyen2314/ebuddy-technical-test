@@ -2,6 +2,9 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import api from "@modules/user/misc/api";
 import {LocalStorage} from "@modules/shared/misc/helpers/local-storage.helper";
 import {get} from "lodash";
+import {getAuth, signInWithEmailAndPassword, User, UserCredential} from "firebase/auth";
+import {auth} from "firebase-admin";
+import {firebaseAuth} from "@modules/shared/middlewares/firebaseAuth";
 
 export interface AuthState {
     currentUser: any;
@@ -25,6 +28,13 @@ export const doAuth = createAsyncThunk(
     'USER/DO_AUTHENTICATE',
     async (data: any) => {
         return await api.doAuth(data);
+    });
+
+export const doFirebaseAuth = createAsyncThunk(
+    'USER/DO_FIREBASE_AUTHENTICATE',
+    async (data: any) => {
+        const {email, password} = data;
+        return await signInWithEmailAndPassword(firebaseAuth, email, password);
     });
 
 export const fetchProfile = createAsyncThunk('USER/FETCH_PROFILE', async () => {
@@ -51,7 +61,7 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(doAuth.pending, (state: AuthState, action: any):void => {state.loading = true})
-            .addCase(doAuth.fulfilled, (state: AuthState, action):void => {
+            .addCase(doAuth.fulfilled, (state: AuthState, action): void => {
                 const authData = action?.payload?.data;
                 state.isAuthenticated = !!authData.token;
                 state.accessToken = authData.token || '';
@@ -75,6 +85,23 @@ export const userSlice = createSlice({
             .addCase(fetchProfile.rejected, (state: AuthState, action: any) => {
                 state.loading = false;
                 state.message = action?.payload?.error || 'Request Failed';
+            })
+            .addCase(doFirebaseAuth.pending, (state: AuthState, action: any):void => {state.loading = true})
+            .addCase(doFirebaseAuth.fulfilled, (state: AuthState, action): void => {
+                const records: UserCredential = action?.payload;
+                const authData: User = records?.user;
+                state.isAuthenticated = !!authData?.accessToken;
+                state.accessToken = authData?.accessToken || '';
+                state.currentUser = authData;
+                state.loading = false;
+                state.message = 'Success';
+                LocalStorage.setAuthentication(authData?.accessToken);
+                LocalStorage.setUserProfile(state.currentUser);
+            })
+            .addCase(doFirebaseAuth.rejected, (state: AuthState, action: any):void => {
+                state.loading = false;
+                state.isAuthenticated = false;
+                state.message = action?.payload?.error || '';
             })
     }
 });

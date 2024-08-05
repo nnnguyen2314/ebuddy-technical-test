@@ -23,7 +23,6 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
     });
 
     const onSubmit = (formData: IFormInput) => {
-        console.log(formData);
         if (handleLogin) {
             handleLogin(formData);
         }

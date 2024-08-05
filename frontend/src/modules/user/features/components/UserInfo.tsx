@@ -51,7 +51,10 @@ const UserInfo: React.FC<UserInfoPropType> = (props: UserInfoPropType) => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={() => {
+                    handleDoLogout();
+                    handleCloseUserMenu();
+                }}>
                     <Button><Typography textAlign="center">Logout</Typography></Button>
                 </MenuItem>
             </Menu>
